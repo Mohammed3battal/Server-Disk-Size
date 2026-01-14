@@ -1,0 +1,11 @@
+-- Detailed disk space information
+SELECT DISTINCT
+    vs.volume_mount_point AS Drive,
+    vs.logical_volume_name AS VolumeName,
+    vs.total_bytes / 1024 / 1024 / 1024 AS TotalGB,
+    vs.available_bytes / 1024 / 1024 / 1024 AS FreeGB,
+    (vs.total_bytes - vs.available_bytes) / 1024 / 1024 / 1024 AS UsedGB,
+    CAST((vs.available_bytes * 100.0 / vs.total_bytes) AS DECIMAL(5,2)) AS PercentFree
+FROM sys.master_files AS f
+CROSS APPLY sys.dm_os_volume_stats(f.database_id, f.file_id) AS vs
+ORDER BY vs.volume_mount_point;
