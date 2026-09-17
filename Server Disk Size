@@ -1,5 +1,6 @@
 -- Detailed disk space information
 SELECT DISTINCT
+	@@SERVERNAME                                                      AS server_name,
     vs.volume_mount_point AS Drive,
     vs.logical_volume_name AS VolumeName,
     vs.total_bytes / 1024 / 1024 / 1024 AS TotalGB,
